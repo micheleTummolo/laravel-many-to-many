@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\Type;
+use App\Models\Technology;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use Illuminate\Support\Facades\Auth;
@@ -31,7 +32,8 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view ('admin.projects.create', compact('types'));
+        $technologies = Technology::all();
+        return view ('admin.projects.create', compact('types', 'technologies'));
     }
 
     /**
@@ -52,6 +54,10 @@ class ProjectController extends Controller
         $newProject->fill($form_data);
 
         $newProject->save();
+
+        if($request->has('technologies')){
+            $newProject->technologies()->attach($request->technologies);
+        }
 
         return redirect()->route('admin.projects.index')->with('message', 'Progetto aggiunto correttamente');
     }
@@ -77,7 +83,8 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
-        return view('admin.projects.edit', compact('project', 'types'));
+        $technologies = Technology::all();
+        return view('admin.projects.edit', compact('project', 'types', 'technologies'));
     }
 
     /**
@@ -96,6 +103,10 @@ class ProjectController extends Controller
         $form_data['slug'] = $slug;
 
         $project->update($form_data);
+
+        if($request->has('technologies')){
+            $project->technologies()->sync($request->technologies);
+        }
 
         return redirect()->route('admin.projects.index')->with('message', $project->name.' è stato modificato correttamente');
     }

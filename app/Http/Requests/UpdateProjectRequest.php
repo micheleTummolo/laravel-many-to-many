@@ -27,7 +27,8 @@ class UpdateProjectRequest extends FormRequest
         return [
             'name'        => ['required', Rule::unique('projects')->ignore($this->project), 'max:150'],
             'description' => ['nullable'],
-            'type_id'     => ['nullable', 'exists:types,id']
+            'type_id'     => ['nullable', 'exists:types,id'],
+            'technologies'=> ['exists:technologies,id']
         ];
     }
 
@@ -42,6 +43,7 @@ class UpdateProjectRequest extends FormRequest
             'name.required' => 'Il nome è richiesto',
             'name.unique' => 'E\' già presente un progetto con questo nome',
             'name.max' => 'Il nome non può essere lungo più di :max caratteri',
+            'tecnologies.exists' => 'La tecnologia selezionata non è valida'
         ];
     }
 }

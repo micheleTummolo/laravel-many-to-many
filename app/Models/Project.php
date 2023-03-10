@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class Project extends Model
 {
-    protected $fillable = ['name', 'description', 'slug', 'type_id', 'technology_id'];
+    protected $fillable = ['name', 'description', 'slug', 'type_id'];
 
     use HasFactory;
 
