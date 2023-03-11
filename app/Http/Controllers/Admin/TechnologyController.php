@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\StoreTechnologyRequest;
 use App\Http\Requests\UpdateTechnologyRequest;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Technology;
 
@@ -29,7 +30,7 @@ class TechnologyController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.technologies.create');
     }
 
     /**
@@ -40,7 +41,18 @@ class TechnologyController extends Controller
      */
     public function store(StoreTechnologyRequest $request)
     {
-        //
+        $form_data = $request->validated();
+
+        $slug = Technology::generateSlug($request->name);
+
+        $form_data['slug'] = $slug;
+
+        $newTechnology = new Technology();
+        $newTechnology->fill($form_data);
+
+        $newTechnology->save();
+
+        return redirect()->route('admin.technologies.index')->with('message', 'Tecnologia aggiunta correttamente');
     }
 
     /**
@@ -62,7 +74,7 @@ class TechnologyController extends Controller
      */
     public function edit(Technology $technology)
     {
-        //
+        return view('admin.technologies.edit', compact('technology'));
     }
 
     /**
@@ -74,7 +86,15 @@ class TechnologyController extends Controller
      */
     public function update(UpdateTechnologyRequest $request, Technology $technology)
     {
-        //
+        $form_data = $request->validated();
+
+        $slug = Technology::generateSlug($request->name);
+
+        $form_data['slug'] = $slug;
+
+        $technology->update($form_data);
+
+        return redirect()->route('admin.technologies.index')->with('message', 'Tecnologia modificata correttamente');
     }
 
     /**
@@ -85,6 +105,8 @@ class TechnologyController extends Controller
      */
     public function destroy(Technology $technology)
     {
-        //
+        $technology->delete();
+
+        return redirect()->route('admin.technologies.index')->with('message', $technology->name.' è stato cancellato correttamente');
     }
 }

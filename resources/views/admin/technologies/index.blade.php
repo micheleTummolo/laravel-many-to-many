@@ -34,9 +34,6 @@
                         <td>{{ $technology['name']}}</td>
                         <td>{{ $technology['slug']}}</td>
                         <td>
-                            <a class="btn btn-sm btn-primary" href="{{ route('admin.technologies.show', $technology->slug) }}" role="button" title="Visualizza la tecnologia">
-                                <i class="fa-solid fa-eye"></i>
-                            </a>
                             <a class="btn btn-sm btn-warning" href="{{ route('admin.technologies.edit', $technology->slug) }}" role="button" title="Modifica la tecnologia">
                                 <i class="fa-solid fa-edit"></i>
                             </a>
