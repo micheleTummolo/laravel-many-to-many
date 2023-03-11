@@ -9,11 +9,27 @@
                 </div>
                 <div>
                     <a class="btn btn-sm btn-primary" href="{{ route('admin.projects.index') }}" role="button">Elenco progetti</a>
+                    <a class="btn btn-sm btn-warning" href="{{ route('admin.projects.edit', $project->slug) }}" role="button" title="Modifica il progetto">
+                        <i class="fa-solid fa-edit"></i>
+                    </a>
                 </div>
             </div>
             <div class="col-12 mt-4 d-flex align-items-end">
                 <h4 class="fw-bold m-0 text-white">Tipo:</h4>
                 <p class="m-0 ms-1 text-white">{{ $project->type ? $project->type->type : 'Senza tipo' }}</p>
+            </div>
+            <div class="col-12 mt-4 d-flex align-items-end">
+                <h4 class="fw-bold m-0 text-white">Tecnologie:</h4>
+                <p class="m-0 ms-1 text-white">
+                    @forelse($project->technologies as $technology)
+                        @if($technology->name == $project->technologies[count($project->technologies) - 1]->name)
+                        {{ $technology->name}}
+                        @else
+                        {{ $technology->name}} -
+                        @endif
+                    @empty
+                        Nessuna tecnologia associata al progetto
+                    @endforelse
             </div>
             <div class="col-6 mt-4 border_dark border_radius_50 table_container">
                 <h5 class="fw-bold text-white">Descrizione:</h5>
